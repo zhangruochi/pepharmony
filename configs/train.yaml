@@ -1,0 +1,82 @@
+mode:
+  ddp: false
+
+model:
+  structure:
+    model_path: "./data/pretrained/siamdiff_gearnet_res.pth"
+    transform:
+      truncate_length: 50
+    spatial_edge_radius: 10
+    spatial_edge_min_distance: 5
+    sequential_edge_max_distance: 2
+    knn_k: 10
+    knn_min_distance: 5
+  sequence:
+    esm:
+      model_path: "./data/pretrained/esm2_t12"
+      model_name: "esm2_t12_35M_UR50D" # "esm2_t12_35M_UR50D"
+      token_arch: "ESM-1b"
+  contrastive:
+    input_dim: 21
+    hidden_dims: [512, 512, 512, 512, 512, 512]
+    num_relation: 7
+    edge_input_dim: 25  # 59 with in/out node one hot embedding / 19 without residual encoding
+    num_angle_bin: 8
+    batch_norm: true
+    concat_hidden: true
+    short_cut: true
+    readout: "mean"
+    mask_rate: 0.15
+    out_dim: 512
+  vae: false
+
+
+data:
+ type: alphafold
+ path: "./data/protein-datasets/AlphaFold/AlphaFold_score_90.plk.gz"
+ pkl_path: "./data"
+ mini_data_len: 0    
+
+loss:
+  CL_similarity_metric: InfoNCE_dot_prod 
+  CL_neg_samples: 10
+  T: 0.1
+  normalize: true
+
+train:
+  amp: false
+  random_seed: 0
+  num_epoch: 30
+  batch_size: 64
+  num_workers: 0
+  pin_memory: false
+  weight_decay: 0
+  lr_scheduler:
+    T_0: 20
+    T_mult: 2
+    eta_min: 5e-8
+  lr_sequence_model: 1e-5
+  lr_structure_model: 5e-5
+  adam_epsilon: 1e-8
+  gradient_accumulation_steps: 1
+  max_grad_norm: 12
+  max_eval_batch: 50
+  eval_per_steps: 100
+  device_ids: [0]
+
+logger:
+  log: true
+  log_dir: "outputs"
+  log_per_steps: 5
+  final_artifact_path: final
+  mlflow:
+    MLFLOW_EXPERIMENT_NAME: "ssc"
+    REGISTERED_MODEL_NAME: "ssc"
+
+inference:
+  max_step: 3
+
+other:
+  debug: false
+  debug_step: 5
+  plot: false

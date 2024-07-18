@@ -1,0 +1,6 @@
+device: "cuda:0"
+token_arch: "ESM-1"
+
+model:
+  pepharmony:
+    model_path: "./data/cpkt/af90_step_50"
