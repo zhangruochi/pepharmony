@@ -13,28 +13,31 @@ Recent advances in protein language models have catalyzed significant progress i
 Overall architecture of the proposed PepHarmony framework. The sequence encoder and structural encoder are trained together by contrastive or generative learning. The downstream prediction tasks will just use the sequence coder to extract peptide representation.
 
 ### Evaluation Dataset
-
+```
 ---data
   ---eval
     ---- aff.csv
     ---- CPP.txt
     ---- Sol.txt
-
+```
 ### Pretrained Model Path
+```
 ---data
   ---pretrained
     ---- esm2_t12/
     ---- mc_gearnet_edge.pth
     ---- siamdiff_gearnet_res.pth
+```
 
 ### Further Pretrained Model Path (for downstream tasks in peptideeval)
+
+```
 ---data
     ---cpkt
         ---- af80_step_50: Multivew Gearnet + ESM; Further Pretrained on AF90
         ---- af890_step_50: Multivew Gearnet + ESM; Further Pretrained on AF80
         ---- pdb_step_50: Multivew Gearnet + ESM; Further Pretrained on PDB
-
-
+```
 
 ### Use pretrained pepharmony model to extract peptide representation
 
